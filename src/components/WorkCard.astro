@@ -1,7 +1,7 @@
 ---
 import PipelineArt from './art/PipelineArt.astro';
 import WaferArt from './art/WaferArt.astro';
-import ChartArt from './art/ChartArt.astro';
+import ReplicaArt from './art/ReplicaArt.astro';
 import Icon from './Icon.astro';
 import type { Work } from '../data/work';
 
@@ -37,7 +37,7 @@ const theme = themes[item.theme];
       <div class="aspect-[30/33] w-full max-w-[18rem] transition-transform duration-700 ease-out group-hover:scale-[1.04]">
         {item.art === 'pipeline' && <PipelineArt />}
         {item.art === 'wafer' && <WaferArt />}
-        {item.art === 'chart' && <ChartArt />}
+        {item.art === 'replicas' && <ReplicaArt />}
       </div>
     </div>
 

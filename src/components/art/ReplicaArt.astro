@@ -1,0 +1,76 @@
+---
+// Three ClickHouse replicas keeping each other in sync, with a backup timeline below.
+const nodes = [
+  { x: 150, y: 62, label: 'replica 1' },
+  { x: 72, y: 168, label: 'replica 2' },
+  { x: 228, y: 168, label: 'replica 3' },
+];
+const edges = [
+  [0, 1],
+  [1, 2],
+  [2, 0],
+] as const;
+const snapshots = Array.from({ length: 7 }, (_, i) => 36 + i * 38);
+---
+
+<svg viewBox="0 0 300 330" class="h-full w-full" role="img" aria-label="Diagram: three ClickHouse replicas kept in sync, with regular backups on a timeline">
+  <g font-family="Inter Variable, sans-serif">
+    <!-- Sync links (drawn first so nodes sit on top) -->
+    {
+      edges.map(([a, b], i) => (
+        <>
+          <line x1={nodes[a].x} y1={nodes[a].y} x2={nodes[b].x} y2={nodes[b].y} stroke="rgba(255,255,255,0.08)" stroke-width="6" stroke-linecap="round" />
+          <line
+            x1={nodes[a].x}
+            y1={nodes[a].y}
+            x2={nodes[b].x}
+            y2={nodes[b].y}
+            stroke="var(--art)"
+            stroke-width="2"
+            stroke-linecap="round"
+            class="flow-line"
+            style={`animation-duration: ${1 + i * 0.3}s`}
+          />
+        </>
+      ))
+    }
+
+    <!-- Replicas -->
+    {
+      nodes.map((n, i) => (
+        <g transform={`translate(${n.x - 48} ${n.y - 25})`}>
+          <rect width="96" height="50" rx="12" fill="#2a1f10" stroke="var(--art)" stroke-opacity="0.45" />
+          <g transform="translate(12 13)" fill="none" stroke="var(--art)" stroke-width="1.4">
+            <ellipse cx="9" cy="3.5" rx="9" ry="3.5" />
+            <path d="M0 3.5v16c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5v-16" />
+            <path d="M0 11.5c0 1.9 4 3.5 9 3.5s9-1.6 9-3.5" opacity="0.6" />
+          </g>
+          <text x="38" y="22" fill="#e6efe9" font-size="11.5" font-weight="600">{n.label}</text>
+          <circle cx="42" cy="34" r="3" fill="var(--art)" class="pulse-soft" style={`--d: ${i * 0.5}s`} />
+          <text x="49" y="37.5" fill="var(--art)" fill-opacity="0.85" font-size="9.5">in sync</text>
+        </g>
+      ))
+    }
+
+    <!-- Backup timeline -->
+    <g transform="translate(0 236)">
+      <text x="30" y="0" fill="var(--art)" fill-opacity="0.8" font-size="10" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+        BACKUPS
+      </text>
+      <text x="270" y="0" fill="var(--art)" fill-opacity="0.8" font-size="10" text-anchor="end" font-family="ui-monospace, SFMono-Regular, Menlo, monospace">
+        RESTORE TESTED ✓
+      </text>
+      <line x1="30" y1="38" x2="270" y2="38" stroke="rgba(255,255,255,0.12)" stroke-width="2" />
+      {
+        snapshots.map((x, i) => (
+          <g class="die" style={`--d: ${i * 0.32}s`}>
+            <rect x={x - 11} y="27" width="22" height="22" rx="6" fill="var(--art)" />
+            <path d={`M${x - 5} 38.5l3.5 3.5 6.5-7`} fill="none" stroke="#1f170c" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" />
+          </g>
+        ))
+      }
+      <text x="30" y="72" fill="rgba(255,255,255,0.4)" font-size="9.5">mon</text>
+      <text x="270" y="72" fill="rgba(255,255,255,0.4)" font-size="9.5" text-anchor="end">sun</text>
+    </g>
+  </g>
+</svg>

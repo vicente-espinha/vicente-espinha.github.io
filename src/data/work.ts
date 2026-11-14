@@ -6,7 +6,7 @@ export type Work = {
   summary: string;
   org: string;
   period: string;
-  art: 'pipeline' | 'wafer' | 'chart';
+  art: 'pipeline' | 'wafer' | 'replicas';
   theme: 'green' | 'violet' | 'amber';
   href?: string;
   linkLabel?: string;
@@ -34,15 +34,13 @@ export const work: Work[] = [
     theme: 'violet',
   },
   {
-    kicker: 'Open source',
-    title: 'Grafana,',
-    titleAccent: 'now speaking OData',
-    summary: 'A data source plugin for OData V4 services',
-    org: 'grafana-odata-datasource',
-    period: '2026',
-    art: 'chart',
+    kicker: 'What I build',
+    title: 'Backups you can',
+    titleAccent: 'actually restore',
+    summary: 'Replicated ClickHouse backups and local test environments',
+    org: 'Critical Manufacturing · Data Platform',
+    period: '2025 – now',
+    art: 'replicas',
     theme: 'amber',
-    href: 'https://github.com/vicente-espinha/grafana-odata-datasource',
-    linkLabel: 'Code',
   },
 ];
