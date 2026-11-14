@@ -35,8 +35,8 @@ export const work: Work[] = [
   },
   {
     kicker: 'What I build',
-    title: 'Backups you can',
-    titleAccent: 'actually restore',
+    title: 'Three copies,',
+    titleAccent: 'zero panic',
     summary: 'Replicated ClickHouse backups and local test environments',
     org: 'Critical Manufacturing · Data Platform',
     period: '2025 – now',
