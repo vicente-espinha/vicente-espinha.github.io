@@ -32,11 +32,12 @@ export const profile = {
     `Before that I spent almost five years on the WorkflowSystem team for Infineon, going from junior to
     senior engineer while building and supporting industrial workflow software that runs in semiconductor fabs.`,
 
-    `Away from the keyboard, I'm usually watching football (or pretty much any other sport),
-    catching up on a movie or series, or listening to music.`,
+    `Away from the keyboard, I love to travel and discover new places. At home I'm usually watching
+    football (or pretty much any other sport), catching up on a movie or series, or listening to music.`,
   ],
 
   interests: [
+    { emoji: '✈️', label: 'Travel' },
     { emoji: '⚽', label: 'Football & sports' },
     { emoji: '🎬', label: 'Movies & series' },
     { emoji: '🎧', label: 'Music' },

@@ -19,6 +19,19 @@ const nav = [
   class="lg:sticky lg:top-0 lg:flex lg:max-h-screen lg:w-[48%] lg:flex-col lg:justify-between lg:py-24"
 >
   <div>
+    <div class="avatar group relative mb-8 h-24 w-24 sm:h-28 sm:w-28">
+      <!-- Slowly rotating accent ring -->
+      <span class="avatar-ring absolute -inset-1 rounded-full" aria-hidden="true"></span>
+      <img
+        src="/avatar.jpg"
+        alt={`Photo of ${profile.name}`}
+        width="400"
+        height="400"
+        fetchpriority="high"
+        decoding="async"
+        class="relative h-full w-full rounded-full border-4 border-bg object-cover transition-transform duration-500 group-hover:scale-105"
+      />
+    </div>
     <h1 class="text-4xl font-bold tracking-tight text-heading sm:text-5xl">
       <a href="/" aria-label={profile.name}>
         {
