@@ -27,7 +27,7 @@ export const profile = {
 
   // Home page teaser for the About page.
   teaser:
-    'Six years building software for factories, a soft spot for reliable systems, and a passport that gets plenty of use.',
+    'Six years building software for factories, a soft spot for reliable systems, and a travel wishlist much longer than my holidays.',
 
   // About page. Each string is one paragraph; simple inline HTML is allowed.
   about: [
