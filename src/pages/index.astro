@@ -1,0 +1,138 @@
+---
+import Base from '../layouts/Base.astro';
+import Sidebar from '../components/Sidebar.astro';
+import Section from '../components/Section.astro';
+import ExperienceCard from '../components/ExperienceCard.astro';
+import ProjectCard from '../components/ProjectCard.astro';
+import Icon from '../components/Icon.astro';
+import { profile } from '../data/profile';
+import { experience, education } from '../data/experience';
+import { projects } from '../data/projects';
+
+const linkedin = profile.socials.find((s) => s.icon === 'linkedin');
+const github = profile.socials.find((s) => s.icon === 'github');
+---
+
+<Base>
+  <div class="mx-auto min-h-screen max-w-screen-xl px-6 py-12 font-sans md:px-12 md:py-20 lg:px-24 lg:py-0">
+    <div class="lg:flex lg:justify-between lg:gap-4">
+      <Sidebar />
+
+      <main id="content" class="pt-24 lg:w-[52%] lg:py-24">
+        <!-- About -->
+        <Section id="about" title="About">
+          <div class="space-y-4">
+            {
+              profile.about.map((p, i) => (
+                <p class="reveal" style={`--reveal-delay: ${i * 80}ms`} set:html={p} />
+              ))
+            }
+          </div>
+
+          <ul class="reveal mt-8 flex flex-wrap gap-3" aria-label="Interests">
+            {
+              profile.interests.map((it) => (
+                <li class="flex items-center gap-2 rounded-full border border-muted/25 px-4 py-2 text-sm text-heading transition-colors duration-300 hover:border-accent/50 hover:text-accent">
+                  <span aria-hidden="true">{it.emoji}</span>
+                  {it.label}
+                </li>
+              ))
+            }
+          </ul>
+        </Section>
+
+        <!-- Experience -->
+        <Section id="experience" title="Experience">
+          <ol class="dim-group">
+            {experience.map((item, i) => <ExperienceCard item={item} delay={i * 80} />)}
+
+            <li class="reveal mb-12 transition-opacity duration-300">
+              <div class="group relative grid pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4">
+                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-lg transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-surface/60 group-hover:drop-shadow-lg lg:-inset-x-6 lg:block">
+                </div>
+                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-muted sm:col-span-2">
+                  {education.period}
+                </header>
+                <div class="z-10 sm:col-span-6">
+                  <h3>
+                    <a
+                      class="group/link inline-flex items-baseline font-medium leading-tight text-heading hover:text-accent focus-visible:text-accent"
+                      href={education.url}
+                      target="_blank"
+                      rel="noreferrer noopener"
+                      aria-label={`${education.school} (opens in a new tab)`}
+                    >
+                      <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
+                      <span>{education.school}</span>
+                      <Icon
+                        name="arrow-up-right"
+                        class="ml-1 inline-block h-4 w-4 shrink-0 translate-y-px transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 motion-reduce:transition-none"
+                      />
+                    </a>
+                  </h3>
+                  <p class="mt-1 text-sm">{education.degree}</p>
+                </div>
+              </div>
+            </li>
+          </ol>
+
+          {
+            linkedin && (
+              <a
+                class="reveal group/more inline-flex items-center font-semibold leading-tight text-heading"
+                href={linkedin.href}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <span class="border-b border-transparent pb-px transition group-hover/more:border-accent">
+                  Full profile on LinkedIn
+                </span>
+                <Icon
+                  name="arrow-up-right"
+                  class="ml-1 h-4 w-4 transition-transform group-hover/more:-translate-y-1 group-hover/more:translate-x-1 motion-reduce:transition-none"
+                />
+              </a>
+            )
+          }
+        </Section>
+
+        <!-- Projects -->
+        <Section id="projects" title="Projects">
+          <ul class="dim-group">
+            {projects.map((item, i) => <ProjectCard item={item} delay={i * 80} />)}
+          </ul>
+
+          {
+            github && (
+              <a
+                class="reveal group/more inline-flex items-center font-semibold leading-tight text-heading"
+                href={github.href}
+                target="_blank"
+                rel="noreferrer noopener"
+              >
+                <span class="border-b border-transparent pb-px transition group-hover/more:border-accent">
+                  Everything on GitHub
+                </span>
+                <Icon
+                  name="arrow-up-right"
+                  class="ml-1 h-4 w-4 transition-transform group-hover/more:-translate-y-1 group-hover/more:translate-x-1 motion-reduce:transition-none"
+                />
+              </a>
+            )
+          }
+        </Section>
+
+        <footer class="max-w-md pb-16 text-sm text-muted sm:pb-0">
+          <p>
+            Built with
+            <a class="font-medium text-text hover:text-accent" href="https://astro.build" target="_blank" rel="noreferrer noopener">Astro</a>
+            and
+            <a class="font-medium text-text hover:text-accent" href="https://tailwindcss.com" target="_blank" rel="noreferrer noopener">Tailwind CSS</a>,
+            deployed on GitHub Pages.
+            <a class="font-medium text-text hover:text-accent" href="https://github.com/vicente-espinha/vicente-espinha.github.io" target="_blank" rel="noreferrer noopener">View the source</a>.
+          </p>
+        </footer>
+      </main>
+    </div>
+  </div>
+</Base>

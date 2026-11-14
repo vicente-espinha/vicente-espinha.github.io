@@ -1,0 +1,45 @@
+---
+// A soft glow that follows the cursor (desktop with a mouse only).
+---
+
+<div
+  aria-hidden="true"
+  class="spotlight pointer-events-none fixed inset-0 z-30 hidden transition-opacity duration-500 lg:block"
+  style="opacity: 0;"
+>
+</div>
+
+<style>
+  .spotlight {
+    background: radial-gradient(
+      600px circle at var(--x, 50%) var(--y, 50%),
+      color-mix(in oklab, var(--color-accent) 7%, transparent),
+      transparent 80%
+    );
+  }
+</style>
+
+<script>
+  const el = document.querySelector<HTMLElement>('.spotlight');
+  const finePointer = window.matchMedia('(hover: hover) and (pointer: fine)').matches;
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (el && finePointer && !reduced) {
+    let frame = 0;
+    window.addEventListener(
+      'pointermove',
+      (e) => {
+        cancelAnimationFrame(frame);
+        frame = requestAnimationFrame(() => {
+          el.style.setProperty('--x', `${e.clientX}px`);
+          el.style.setProperty('--y', `${e.clientY}px`);
+          el.style.opacity = '1';
+        });
+      },
+      { passive: true },
+    );
+    document.documentElement.addEventListener('pointerleave', () => {
+      el.style.opacity = '0';
+    });
+  }
+</script>

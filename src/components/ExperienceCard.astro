@@ -1,0 +1,77 @@
+---
+import Icon from './Icon.astro';
+import TechPills from './TechPills.astro';
+import type { Experience } from '../data/experience';
+
+interface Props {
+  item: Experience;
+  delay?: number;
+}
+
+const { item, delay = 0 } = Astro.props;
+---
+
+<li class="reveal mb-12 transition-opacity duration-300" style={`--reveal-delay: ${delay}ms`}>
+  <div class="group relative grid pb-1 transition-all sm:grid-cols-8 sm:gap-8 md:gap-4">
+    <!-- Hover surface -->
+    <div
+      class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-lg transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-surface/60 group-hover:shadow-[inset_0_1px_0_0_rgba(148,163,184,0.1)] group-hover:drop-shadow-lg lg:-inset-x-6 lg:block"
+    >
+    </div>
+
+    <header
+      class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-muted sm:col-span-2"
+      aria-label={item.period}
+    >
+      {item.period}
+    </header>
+
+    <div class="z-10 sm:col-span-6">
+      <h3 class="font-medium leading-snug text-heading">
+        {
+          item.url ? (
+            <a
+              class="inline-flex items-baseline text-base font-medium leading-tight text-heading hover:text-accent focus-visible:text-accent group/link"
+              href={item.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${item.company} (opens in a new tab)`}
+            >
+              <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block" />
+              <span>{item.company}</span>
+              <Icon
+                name="arrow-up-right"
+                class="ml-1 inline-block h-4 w-4 shrink-0 translate-y-px transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 group-focus-visible/link:-translate-y-1 group-focus-visible/link:translate-x-1 motion-reduce:transition-none"
+              />
+            </a>
+          ) : (
+            <span>{item.company}</span>
+          )
+        }
+      </h3>
+      <p class="mt-0.5 text-sm text-muted">{item.location}</p>
+
+      <!-- Role timeline -->
+      <ol class="relative mt-4 space-y-5 border-l border-muted/30 pl-5">
+        {
+          item.roles.map((role, i) => (
+            <li class="relative">
+              <span
+                class:list={[
+                  'absolute -left-[25px] top-1.5 h-2 w-2 rounded-full ring-4 ring-bg',
+                  i === 0 ? 'bg-accent' : 'bg-muted/60',
+                ]}
+                aria-hidden="true"
+              />
+              <p class="text-sm font-medium text-heading">{role.title}</p>
+              <p class="text-xs text-muted">{role.period}</p>
+              <p class="mt-1.5 text-sm leading-normal">{role.summary}</p>
+            </li>
+          ))
+        }
+      </ol>
+
+      <TechPills items={item.tech} />
+    </div>
+  </div>
+</li>

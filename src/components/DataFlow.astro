@@ -1,0 +1,19 @@
+---
+// Background: a faint dot grid that sweeps in on load, with glowing "packets"
+// of data streaming along its lines. Grid points near the cursor light up.
+---
+
+<canvas id="dataflow" aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 h-full w-full"></canvas>
+
+<style>
+  #dataflow {
+    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 25% 30%, #000 35%, transparent 100%);
+    mask-image: radial-gradient(ellipse 90% 80% at 25% 30%, #000 35%, transparent 100%);
+  }
+</style>
+
+<script>
+  import { startDataFlow } from '../scripts/dataflow';
+  const canvas = document.getElementById('dataflow') as HTMLCanvasElement | null;
+  if (canvas) startDataFlow(canvas);
+</script>
