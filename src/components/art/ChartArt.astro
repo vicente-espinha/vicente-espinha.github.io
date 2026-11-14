@@ -1,0 +1,57 @@
+---
+// A Grafana-style panel whose time series draws itself.
+const W = 236;
+const H = 150;
+const values = [42, 48, 45, 58, 54, 66, 61, 74, 70, 86, 80, 92, 88, 104, 98, 112];
+const max = 120;
+const pts = values.map((v, i) => [(i / (values.length - 1)) * W, H - (v / max) * H] as const);
+const line = pts.map(([x, y], i) => `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`).join(' ');
+const area = `${line} L${W} ${H} L0 ${H} Z`;
+const secondary = values
+  .map((v, i) => {
+    const x = (i / (values.length - 1)) * W;
+    const y = H - ((v * 0.55 + 10) / max) * H;
+    return `${i ? 'L' : 'M'}${x.toFixed(1)} ${y.toFixed(1)}`;
+  })
+  .join(' ');
+---
+
+<svg viewBox="0 0 300 330" class="h-full w-full" role="img" aria-label="Illustration of a Grafana panel charting data from an OData service">
+  <defs>
+    <linearGradient id="chart-fill" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0%" stop-color="var(--art)" stop-opacity="0.35" />
+      <stop offset="100%" stop-color="var(--art)" stop-opacity="0" />
+    </linearGradient>
+  </defs>
+  <g font-family="Inter Variable, sans-serif">
+    <!-- Query bar -->
+    <g transform="translate(22 28)">
+      <rect width="256" height="34" rx="10" fill="rgba(255,255,255,0.05)" stroke="rgba(255,255,255,0.08)" />
+      <text x="14" y="22" font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="11" fill="var(--art)">
+        GET /odata/Orders?$filter=…
+      </text>
+    </g>
+
+    <!-- Panel -->
+    <g transform="translate(22 80)">
+      <rect width="256" height="216" rx="14" fill="rgba(255,255,255,0.04)" stroke="rgba(255,255,255,0.08)" />
+      <text x="16" y="26" fill="#e6efe9" font-size="12.5" font-weight="600">Orders per hour</text>
+      <circle cx="232" cy="22" r="3.5" fill="var(--art)" class="pulse-soft" />
+      <g transform="translate(10 46)">
+        {[0, 1, 2, 3].map((i) => <line x1="0" x2={W} y1={(i * H) / 3} y2={(i * H) / 3} stroke="rgba(255,255,255,0.06)" />)}
+        <path d={secondary} fill="none" stroke="rgba(255,255,255,0.22)" stroke-width="1.5" stroke-dasharray="3 4" />
+        <path d={area} fill="url(#chart-fill)" class="pulse-soft" style="--d: 0.4s" />
+        <path
+          d={line}
+          fill="none"
+          stroke="var(--art)"
+          stroke-width="2.5"
+          stroke-linejoin="round"
+          stroke-linecap="round"
+          class="draw-line"
+          style="--len: 420"
+        />
+      </g>
+    </g>
+  </g>
+</svg>

@@ -1,0 +1,52 @@
+---
+// A silicon wafer: dies light up in a sweep, like lots moving through process steps.
+const cx = 150;
+const cy = 150;
+const r = 118;
+const size = 17;
+const gap = 3;
+const step = size + gap;
+const n = Math.floor((r * 2) / step);
+const start = cx - (n * step) / 2;
+
+const dies: { x: number; y: number; d: number }[] = [];
+for (let i = 0; i < n; i++) {
+  for (let j = 0; j < n; j++) {
+    const x = start + i * step;
+    const y = start + j * step;
+    const corners = [
+      [x, y],
+      [x + size, y],
+      [x, y + size],
+      [x + size, y + size],
+    ];
+    if (corners.every(([px, py]) => Math.hypot(px - cx, py - cy) < r - 4)) {
+      dies.push({ x, y, d: (i + j) * 0.09 });
+    }
+  }
+}
+---
+
+<svg viewBox="0 0 300 330" class="h-full w-full" role="img" aria-label="Illustration of a silicon wafer with dies lighting up">
+  <defs>
+    <radialGradient id="wafer-sheen" cx="35%" cy="30%" r="80%">
+      <stop offset="0%" stop-color="rgba(255,255,255,0.10)" />
+      <stop offset="100%" stop-color="rgba(255,255,255,0.02)" />
+    </radialGradient>
+  </defs>
+  <!-- Wafer with its flat edge at the bottom -->
+  <path
+    d={`M ${cx - 40} ${cy + r - 7} A ${r} ${r} 0 1 1 ${cx + 40} ${cy + r - 7} Z`}
+    fill="url(#wafer-sheen)"
+    stroke="var(--art)"
+    stroke-opacity="0.4"
+  />
+  {
+    dies.map((die) => (
+      <rect x={die.x} y={die.y} width={size} height={size} rx="2.5" fill="var(--art)" class="die" style={`--d: ${die.d}s`} />
+    ))
+  }
+  <g font-family="ui-monospace, SFMono-Regular, Menlo, monospace" font-size="10" fill="var(--art)" fill-opacity="0.75">
+    <text x="150" y="304" text-anchor="middle">LOT 24-117 · STEP 42 / 118 · TRACK IN</text>
+  </g>
+</svg>

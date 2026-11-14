@@ -154,8 +154,10 @@ export function startDataFlow(canvas: HTMLCanvasElement) {
     window.addEventListener(
       'pointermove',
       (e) => {
-        mouse.x = e.clientX;
-        mouse.y = e.clientY;
+        // The canvas sits at the top of the page, so convert to page coordinates.
+        const rect = canvas.getBoundingClientRect();
+        mouse.x = e.clientX - rect.left;
+        mouse.y = e.clientY - rect.top;
       },
       { passive: true },
     );

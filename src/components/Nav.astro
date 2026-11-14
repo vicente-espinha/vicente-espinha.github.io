@@ -1,0 +1,55 @@
+---
+import { BLOG_ENABLED, profile } from '../data/profile';
+
+const path = Astro.url.pathname.replace(/\/$/, '') || '/';
+const links = [
+  { href: '/#work', label: 'work', match: '/#work' },
+  { href: '/about/', label: 'about', match: '/about' },
+  { href: '/blog/', label: 'blog', match: '/blog', soon: !BLOG_ENABLED },
+];
+const isActive = (match: string) => match !== '/#work' && path.startsWith(match);
+---
+
+<header class="sticky top-0 z-40 border-b border-transparent backdrop-blur-md transition-colors duration-300 [&.scrolled]:border-line [&.scrolled]:bg-bg/70" data-nav-header>
+  <nav class="mx-auto flex h-16 max-w-6xl items-center justify-between px-6 md:px-10" aria-label="Main">
+    <a href="/" class="font-serif text-xl leading-none text-heading transition-colors hover:text-accent sm:text-2xl">
+      {profile.name.toLowerCase()}
+    </a>
+    <ul class="flex items-center gap-4 text-sm sm:gap-8">
+      {
+        links.map((l) => (
+          <li>
+            <a
+              href={l.href}
+              class:list={[
+                'group relative inline-flex items-center gap-1.5 py-1 transition-colors hover:text-heading',
+                isActive(l.match) ? 'text-heading' : 'text-text',
+              ]}
+              aria-current={isActive(l.match) ? 'page' : undefined}
+            >
+              {l.label}
+              {l.soon && (
+                <span class="hidden rounded-full bg-accent/10 px-1.5 py-px text-[9px] font-semibold uppercase tracking-wider text-accent sm:inline">
+                  soon
+                </span>
+              )}
+              <span
+                class:list={[
+                  'absolute -bottom-0.5 left-0 h-px bg-accent transition-all duration-300 group-hover:w-full',
+                  isActive(l.match) ? 'w-full' : 'w-0',
+                ]}
+              />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </nav>
+</header>
+
+<script>
+  const header = document.querySelector('[data-nav-header]');
+  const onScroll = () => header?.classList.toggle('scrolled', window.scrollY > 8);
+  window.addEventListener('scroll', onScroll, { passive: true });
+  onScroll();
+</script>

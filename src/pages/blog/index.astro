@@ -13,48 +13,42 @@ const fmt = new Intl.DateTimeFormat('en', { year: 'numeric', month: 'short', day
 ---
 
 <Base title={`Blog · ${profile.name}`} description={`Writing by ${profile.name}.`}>
-  <main id="content" class="mx-auto flex min-h-screen max-w-2xl flex-col px-6 py-24 md:px-12">
-    <a
-      href="/"
-      class="rise group mb-12 inline-flex w-max items-center gap-2 text-sm font-semibold text-accent"
-    >
-      <span class="transition-transform group-hover:-translate-x-1" aria-hidden="true">←</span>
-      {profile.name}
-    </a>
+  <section class="mx-auto max-w-6xl px-6 pt-16 md:px-10 md:pt-24">
+    <p class="rise text-sm text-muted">Blog</p>
+    <h1 class="mt-4 font-serif text-6xl leading-[1.02] tracking-tight text-heading sm:text-7xl" aria-label="Notes from the pipeline.">
+      <span aria-hidden="true">
+        <span class="word" style="--i: 0">Notes</span>
+        <span class="word" style="--i: 1">from</span>
+        <em class="italic text-accent"><span class="word" style="--i: 2">the</span> <span class="word" style="--i: 3">pipeline.</span></em>
+      </span>
+    </h1>
 
     {
       BLOG_ENABLED ? (
-        <>
-          <h1 class="rise text-4xl font-bold tracking-tight text-heading">Blog</h1>
-          <ul class="mt-12 space-y-10">
-            {posts.map((post) => (
-              <li>
-                <a href={`/blog/${post.id}/`} class="group block">
-                  <p class="text-xs uppercase tracking-wide text-muted">{fmt.format(post.data.date)}</p>
-                  <h2 class="mt-1 text-lg font-medium text-heading group-hover:text-accent">{post.data.title}</h2>
-                  <p class="mt-1 text-sm">{post.data.description}</p>
-                </a>
-              </li>
-            ))}
-          </ul>
-        </>
+        <ul class="mt-16 border-t border-line">
+          {posts.map((post, idx) => (
+            <li class="reveal border-b border-line" style={`--reveal-delay: ${idx * 80}ms`}>
+              <a href={`/blog/${post.id}/`} class="group -mx-4 grid gap-1 rounded-xl px-4 py-6 transition-colors hover:bg-surface/70 sm:grid-cols-[1fr_auto] sm:gap-8">
+                <span>
+                  <span class="block font-serif text-2xl text-heading transition-colors group-hover:text-accent">{post.data.title}</span>
+                  <span class="mt-1 block text-sm text-text">{post.data.description}</span>
+                </span>
+                <span class="text-sm text-muted">{fmt.format(post.data.date)}</span>
+              </a>
+            </li>
+          ))}
+        </ul>
       ) : (
-        <div class="flex flex-1 flex-col items-center justify-center text-center">
-          <span class="rise rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
+        <div class="rise mt-14 max-w-xl rounded-3xl border border-line bg-surface/60 p-8" style="--rise-delay: 800ms">
+          <span class="rounded-full bg-accent/10 px-3 py-1 text-xs font-semibold uppercase tracking-widest text-accent">
             Coming soon
           </span>
-          <h1
-            class="rise mt-6 text-4xl font-bold tracking-tight text-heading sm:text-5xl"
-            style="--rise-delay: 100ms"
-          >
-            The blog is on its way.
-          </h1>
-          <p class="rise mt-4 max-w-md" style="--rise-delay: 200ms">
-            I'll be writing about data platforms, replication and building software for
-            manufacturing. Check back soon.
+          <p class="mt-5 text-lg text-text">
+            I'll be writing about data platforms, replication and building software for manufacturing. Check back
+            soon.
           </p>
         </div>
       )
     }
-  </main>
+  </section>
 </Base>

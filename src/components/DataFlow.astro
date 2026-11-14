@@ -3,12 +3,13 @@
 // of data streaming along its lines. Grid points near the cursor light up.
 ---
 
-<canvas id="dataflow" aria-hidden="true" class="pointer-events-none fixed inset-0 z-0 h-full w-full"></canvas>
+<canvas id="dataflow" aria-hidden="true" class="pointer-events-none absolute inset-x-0 top-0 z-0 h-screen w-full"></canvas>
 
 <style>
   #dataflow {
-    -webkit-mask-image: radial-gradient(ellipse 90% 80% at 25% 30%, #000 35%, transparent 100%);
-    mask-image: radial-gradient(ellipse 90% 80% at 25% 30%, #000 35%, transparent 100%);
+    /* Sits behind the hero only and fades out at the bottom edge. */
+    -webkit-mask-image: radial-gradient(ellipse 85% 85% at 70% 20%, #000 30%, transparent 100%);
+    mask-image: radial-gradient(ellipse 85% 85% at 70% 20%, #000 30%, transparent 100%);
   }
 </style>
 

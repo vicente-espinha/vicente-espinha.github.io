@@ -1,18 +1,25 @@
 ---
 import '@fontsource-variable/inter';
+import '@fontsource/instrument-serif/400.css';
+import '@fontsource/instrument-serif/400-italic.css';
 import '../styles/global.css';
 import Spotlight from '../components/Spotlight.astro';
 import DataFlow from '../components/DataFlow.astro';
+import Nav from '../components/Nav.astro';
+import Footer from '../components/Footer.astro';
 import { profile } from '../data/profile';
 
 interface Props {
   title?: string;
   description?: string;
+  /** Show the animated data-flow background (home page). */
+  flow?: boolean;
 }
 
 const {
   title = `${profile.name} · ${profile.title}`,
   description = profile.description,
+  flow = false,
 } = Astro.props;
 
 const canonical = new URL(Astro.url.pathname, Astro.site);
@@ -31,7 +38,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta name="description" content={description} />
     <link rel="canonical" href={canonical} />
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
-    <meta name="theme-color" content="#0b1120" />
+    <meta name="theme-color" content="#0f1714" />
     <meta name="color-scheme" content="dark" />
     <meta name="generator" content={Astro.generator} />
 
@@ -55,10 +62,14 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     >
       Skip to content
     </a>
-    <DataFlow />
+    {flow && <DataFlow />}
     <Spotlight />
-    <div class="relative z-10">
-      <slot />
+    <div class="relative z-10 flex min-h-screen flex-col">
+      <Nav />
+      <main id="content" class="flex-1">
+        <slot />
+      </main>
+      <Footer />
     </div>
     <script>
       import '../scripts/reveal';

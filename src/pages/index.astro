@@ -1,138 +1,152 @@
 ---
 import Base from '../layouts/Base.astro';
-import Sidebar from '../components/Sidebar.astro';
-import Section from '../components/Section.astro';
-import ExperienceCard from '../components/ExperienceCard.astro';
-import ProjectCard from '../components/ProjectCard.astro';
+import WorkCard from '../components/WorkCard.astro';
 import Icon from '../components/Icon.astro';
 import { profile } from '../data/profile';
-import { experience, education } from '../data/experience';
-import { projects } from '../data/projects';
+import { experience } from '../data/experience';
+import { work } from '../data/work';
 
-const linkedin = profile.socials.find((s) => s.icon === 'linkedin');
-const github = profile.socials.find((s) => s.icon === 'github');
+// Split the headline into words so each can animate in on its own.
+let i = 0;
+const leadWords = profile.headline.lead.split(' ').map((w) => ({ w, i: i++ }));
+const accentWords = profile.headline.accent.split(' ').map((w) => ({ w, i: i++ }));
 ---
 
-<Base>
-  <div class="mx-auto min-h-screen max-w-screen-xl px-6 py-12 font-sans md:px-12 md:py-20 lg:px-24 lg:py-0">
-    <div class="lg:flex lg:justify-between lg:gap-4">
-      <Sidebar />
+<Base flow>
+  <!-- Hero -->
+  <section class="mx-auto max-w-6xl px-6 pb-24 pt-16 md:px-10 md:pb-32 md:pt-28">
+    <p
+      class="rise inline-flex items-center gap-2.5 rounded-full border border-line bg-surface/60 py-1 pl-1 pr-4 text-sm text-text backdrop-blur"
+      style="--rise-delay: 100ms"
+    >
+      <img src="/avatar.jpg" alt="" width="28" height="28" class="h-7 w-7 rounded-full object-cover" />
+      <span class="relative flex h-2 w-2" aria-hidden="true">
+        <span class="ping absolute inline-flex h-full w-full rounded-full bg-accent opacity-70"></span>
+        <span class="relative inline-flex h-2 w-2 rounded-full bg-accent"></span>
+      </span>
+      <span data-scramble data-scramble-delay="250">
+        {profile.title.toLowerCase()} @ {profile.company.toLowerCase()}
+      </span>
+    </p>
 
-      <main id="content" class="pt-24 lg:w-[52%] lg:py-24">
-        <!-- About -->
-        <Section id="about" title="About">
-          <div class="space-y-4">
-            {
-              profile.about.map((p, i) => (
-                <p class="reveal" style={`--reveal-delay: ${i * 80}ms`} set:html={p} />
-              ))
-            }
-          </div>
+    <h1
+      class="mt-8 max-w-5xl font-serif text-[2.9rem] leading-[1.04] tracking-tight text-heading sm:text-6xl md:text-7xl lg:text-[5.4rem]"
+      aria-label={`${profile.headline.lead} ${profile.headline.accent}`}
+    >
+      <span aria-hidden="true">
+        {leadWords.map(({ w, i }) => <><span class="word" style={`--i: ${i}`}>{w}</span>{' '}</>)}
+        <br class="hidden md:block" />
+        <em class="italic text-accent">
+          {accentWords.map(({ w, i }) => <><span class="word" style={`--i: ${i}`}>{w}</span>{' '}</>)}
+        </em>
+      </span>
+    </h1>
 
-          <ul class="reveal mt-8 flex flex-wrap gap-3" aria-label="Interests">
-            {
-              profile.interests.map((it) => (
-                <li class="flex items-center gap-2 rounded-full border border-muted/25 px-4 py-2 text-sm text-heading transition-colors duration-300 hover:border-accent/50 hover:text-accent">
-                  <span aria-hidden="true">{it.emoji}</span>
-                  {it.label}
-                </li>
-              ))
-            }
-          </ul>
-        </Section>
+    <p class="rise mt-8 max-w-xl text-lg leading-relaxed text-text" style="--rise-delay: 1500ms">
+      {profile.intro}
+    </p>
 
-        <!-- Experience -->
-        <Section id="experience" title="Experience">
-          <ol class="dim-group">
-            {experience.map((item, i) => <ExperienceCard item={item} delay={i * 80} />)}
-
-            <li class="reveal mb-12 transition-opacity duration-300">
-              <div class="group relative grid pb-1 sm:grid-cols-8 sm:gap-8 md:gap-4">
-                <div class="absolute -inset-x-4 -inset-y-4 z-0 hidden rounded-lg transition-all duration-300 group-hover:-translate-y-1 group-hover:bg-surface/60 group-hover:drop-shadow-lg lg:-inset-x-6 lg:block">
-                </div>
-                <header class="z-10 mb-2 mt-1 text-xs font-semibold uppercase tracking-wide text-muted sm:col-span-2">
-                  {education.period}
-                </header>
-                <div class="z-10 sm:col-span-6">
-                  <h3>
-                    <a
-                      class="group/link inline-flex items-baseline font-medium leading-tight text-heading hover:text-accent focus-visible:text-accent"
-                      href={education.url}
-                      target="_blank"
-                      rel="noreferrer noopener"
-                      aria-label={`${education.school} (opens in a new tab)`}
-                    >
-                      <span class="absolute -inset-x-4 -inset-y-2.5 hidden rounded md:-inset-x-6 md:-inset-y-4 lg:block"></span>
-                      <span>{education.school}</span>
-                      <Icon
-                        name="arrow-up-right"
-                        class="ml-1 inline-block h-4 w-4 shrink-0 translate-y-px transition-transform group-hover/link:-translate-y-1 group-hover/link:translate-x-1 motion-reduce:transition-none"
-                      />
-                    </a>
-                  </h3>
-                  <p class="mt-1 text-sm">{education.degree}</p>
-                </div>
-              </div>
+    <div class="rise mt-10 flex flex-wrap items-center gap-3" style="--rise-delay: 1650ms">
+      <a
+        href="#work"
+        class="group inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-bg transition hover:shadow-[0_0_30px_-4px_var(--color-accent)]"
+      >
+        See my work
+        <span class="transition-transform group-hover:translate-y-0.5" aria-hidden="true">↓</span>
+      </a>
+      <a
+        href="/about/"
+        class="group inline-flex items-center gap-2 rounded-full border border-line px-5 py-2.5 text-sm font-semibold text-heading transition hover:border-accent/60 hover:text-accent"
+      >
+        More about me
+        <span class="transition-transform group-hover:translate-x-0.5" aria-hidden="true">→</span>
+      </a>
+      <ul class="ml-2 flex items-center gap-4">
+        {
+          profile.socials.map((s) => (
+            <li>
+              <a
+                class="block text-muted transition-all duration-300 hover:-translate-y-0.5 hover:text-heading"
+                href={s.href}
+                target="_blank"
+                rel="noreferrer noopener"
+                aria-label={`${s.label} (opens in a new tab)`}
+              >
+                <Icon name={s.icon} class="h-5 w-5" />
+              </a>
             </li>
-          </ol>
-
-          {
-            linkedin && (
-              <a
-                class="reveal group/more inline-flex items-center font-semibold leading-tight text-heading"
-                href={linkedin.href}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <span class="border-b border-transparent pb-px transition group-hover/more:border-accent">
-                  Full profile on LinkedIn
-                </span>
-                <Icon
-                  name="arrow-up-right"
-                  class="ml-1 h-4 w-4 transition-transform group-hover/more:-translate-y-1 group-hover/more:translate-x-1 motion-reduce:transition-none"
-                />
-              </a>
-            )
-          }
-        </Section>
-
-        <!-- Projects -->
-        <Section id="projects" title="Projects">
-          <ul class="dim-group">
-            {projects.map((item, i) => <ProjectCard item={item} delay={i * 80} />)}
-          </ul>
-
-          {
-            github && (
-              <a
-                class="reveal group/more inline-flex items-center font-semibold leading-tight text-heading"
-                href={github.href}
-                target="_blank"
-                rel="noreferrer noopener"
-              >
-                <span class="border-b border-transparent pb-px transition group-hover/more:border-accent">
-                  Everything on GitHub
-                </span>
-                <Icon
-                  name="arrow-up-right"
-                  class="ml-1 h-4 w-4 transition-transform group-hover/more:-translate-y-1 group-hover/more:translate-x-1 motion-reduce:transition-none"
-                />
-              </a>
-            )
-          }
-        </Section>
-
-        <footer class="max-w-md pb-16 text-sm text-muted sm:pb-0">
-          <p>
-            Built with
-            <a class="font-medium text-text hover:text-accent" href="https://astro.build" target="_blank" rel="noreferrer noopener">Astro</a>
-            and
-            <a class="font-medium text-text hover:text-accent" href="https://tailwindcss.com" target="_blank" rel="noreferrer noopener">Tailwind CSS</a>,
-            deployed on GitHub Pages.
-            <a class="font-medium text-text hover:text-accent" href="https://github.com/vicente-espinha/vicente-espinha.github.io" target="_blank" rel="noreferrer noopener">View the source</a>.
-          </p>
-        </footer>
-      </main>
+          ))
+        }
+      </ul>
     </div>
-  </div>
+  </section>
+
+  <!-- Selected work -->
+  <section id="work" class="mx-auto max-w-6xl scroll-mt-20 px-6 md:px-10" aria-labelledby="work-title">
+    <h2 id="work-title" class="reveal text-sm text-muted">Selected work</h2>
+    <ul class="mt-5 grid gap-5 md:grid-cols-2 lg:grid-cols-3">
+      {work.map((item, idx) => <WorkCard item={item} delay={idx * 120} />)}
+    </ul>
+  </section>
+
+  <!-- Experience -->
+  <section class="mx-auto mt-28 max-w-6xl px-6 md:px-10" aria-labelledby="exp-title">
+    <h2 id="exp-title" class="reveal text-sm text-muted">Experience</h2>
+    <ul class="mt-5 border-t border-line">
+      {
+        experience.map((row, idx) => (
+          <li class="reveal border-b border-line" style={`--reveal-delay: ${idx * 80}ms`}>
+            <a
+              href={row.url}
+              target="_blank"
+              rel="noreferrer noopener"
+              class="group -mx-4 grid grid-cols-1 gap-1 rounded-xl px-4 py-5 transition-colors duration-300 hover:bg-surface/70 sm:grid-cols-[1fr_auto] sm:items-center sm:gap-6"
+            >
+              <span class="flex items-center gap-2 font-medium text-heading transition-colors group-hover:text-accent">
+                {row.org}
+                <Icon
+                  name="arrow-up-right"
+                  class="h-4 w-4 -translate-x-1 opacity-0 transition-all duration-300 group-hover:translate-x-0 group-hover:opacity-100"
+                />
+              </span>
+              <span class="text-sm text-text sm:text-right">
+                {row.role} <span class="text-muted">· {row.period}</span>
+              </span>
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </section>
+
+  <!-- About teaser -->
+  <section class="mx-auto mt-28 max-w-6xl px-6 md:px-10">
+    <a
+      href="/about/"
+      class="reveal group flex flex-col gap-6 rounded-3xl border border-line bg-surface/60 p-6 transition-all duration-500 hover:-translate-y-1 hover:border-accent/40 sm:flex-row sm:items-center sm:p-8"
+    >
+      <img
+        src="/avatar.jpg"
+        alt={`Photo of ${profile.name}`}
+        width="96"
+        height="96"
+        loading="lazy"
+        class="h-20 w-20 shrink-0 rounded-full object-cover ring-2 ring-accent/40 ring-offset-4 ring-offset-surface transition-transform duration-500 group-hover:rotate-[-4deg] group-hover:scale-105"
+      />
+      <div class="flex-1">
+        <p class="font-serif text-3xl text-heading">
+          A bit more <em class="italic text-accent">about me</em>
+        </p>
+        <p class="mt-2 max-w-2xl text-text">{profile.teaser}</p>
+      </div>
+      <span class="inline-flex items-center gap-2 text-sm font-semibold text-heading transition-colors group-hover:text-accent">
+        Read more
+        <span class="transition-transform group-hover:translate-x-1" aria-hidden="true">→</span>
+      </span>
+    </a>
+  </section>
 </Base>
+
+<script>
+  import '../scripts/scramble';
+</script>

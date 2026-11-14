@@ -4,19 +4,23 @@ import { profile } from '../data/profile';
 ---
 
 <Base title={`Page not found · ${profile.name}`}>
-  <main id="content" class="flex min-h-screen flex-col items-center justify-center px-6 text-center">
-    <p class="rise text-sm font-semibold uppercase tracking-widest text-accent">404</p>
-    <h1 class="rise mt-4 text-4xl font-bold tracking-tight text-heading sm:text-5xl" style="--rise-delay: 100ms">
-      Page not found
+  <section class="mx-auto flex max-w-6xl flex-col items-start px-6 pt-24 md:px-10 md:pt-32">
+    <p class="rise text-sm text-muted">404</p>
+    <h1 class="mt-4 font-serif text-6xl leading-[1.02] text-heading sm:text-7xl" aria-label="This packet got lost.">
+      <span aria-hidden="true">
+        <span class="word" style="--i: 0">This</span>
+        <span class="word" style="--i: 1">packet</span>
+        <em class="italic text-accent"><span class="word" style="--i: 2">got</span> <span class="word" style="--i: 3">lost.</span></em>
+      </span>
     </h1>
-    <p class="rise mt-4" style="--rise-delay: 200ms">This page doesn't exist, or it moved.</p>
+    <p class="rise mt-6 text-lg" style="--rise-delay: 800ms">The page you're looking for doesn't exist, or it moved.</p>
     <a
       href="/"
-      class="rise group mt-10 inline-flex items-center gap-2 font-semibold text-accent"
-      style="--rise-delay: 300ms"
+      class="rise group mt-10 inline-flex items-center gap-2 rounded-full bg-accent px-5 py-2.5 text-sm font-semibold text-bg"
+      style="--rise-delay: 950ms"
     >
       <span class="transition-transform group-hover:-translate-x-1" aria-hidden="true">←</span>
       Back home
     </a>
-  </main>
+  </section>
 </Base>

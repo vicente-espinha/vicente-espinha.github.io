@@ -1,0 +1,32 @@
+---
+import Icon from './Icon.astro';
+import { profile } from '../data/profile';
+---
+
+<footer class="mx-auto mt-32 w-full max-w-6xl border-t border-line px-6 py-10 md:px-10">
+  <div class="flex flex-col gap-6 sm:flex-row sm:items-center sm:justify-between">
+    <p class="text-sm text-muted">
+      © {new Date().getFullYear()} {profile.name} · Built with
+      <a class="text-text hover:text-accent" href="https://astro.build" target="_blank" rel="noreferrer noopener">Astro</a>
+      ·
+      <a class="text-text hover:text-accent" href="https://github.com/vicente-espinha/vicente-espinha.github.io" target="_blank" rel="noreferrer noopener">source</a>
+    </p>
+    <ul class="flex items-center gap-5">
+      {
+        profile.socials.map((s) => (
+          <li>
+            <a
+              class="block text-muted transition-all duration-300 hover:-translate-y-0.5 hover:text-heading"
+              href={s.href}
+              target="_blank"
+              rel="noreferrer noopener"
+              aria-label={`${s.label} (opens in a new tab)`}
+            >
+              <Icon name={s.icon} class="h-5 w-5" />
+            </a>
+          </li>
+        ))
+      }
+    </ul>
+  </div>
+</footer>
